@@ -28,7 +28,7 @@ export default function TabLayout() {
         options={{
           headerTitle: "13.11.2023 - 19.11.2023",
           title: "Home",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -48,8 +48,26 @@ export default function TabLayout() {
       <Tabs.Screen
         name="two"
         options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Templates",
+          tabBarIcon: ({ color }) => <TabBarIcon name="table" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="three"
+        options={{
+          title: "Events",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="question-circle" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="four"
+        options={{
+          title: "Dashbaord",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="area-chart" color={color} />
+          ),
         }}
       />
     </Tabs>
