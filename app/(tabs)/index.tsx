@@ -1,5 +1,5 @@
 import { View, StyleProp, ViewStyle, TextStyle } from "react-native";
-import WeekView, { WeekViewEvent, WeekViewProps } from "react-native-week-view";
+import WeekView, { WeekViewEvent } from "react-native-week-view";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Store } from "../../helpers/store";
@@ -73,7 +73,7 @@ const testEvents: UntypedWeekViewEvent[] = [
   },
 ];
 
-export default function TabOneScreen() {
+export default function HomeScreen() {
   const [events, setEvents] = useState<WeekViewEvent[]>([]);
   const [editingEventId, setEditEventId] = useState<number | undefined>();
   const draggingEnabled = Store.useState((state) => state.draggingEnabled);

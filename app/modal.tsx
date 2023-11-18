@@ -2,15 +2,14 @@ import { StatusBar } from "expo-status-bar";
 import {
   Platform,
   Pressable,
-  StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
   View,
+  Text,
 } from "react-native";
 import { router } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 
-import { Text } from "../components/Themed";
 import { Store } from "../helpers/store";
 
 type SettingsButtonProps = {
@@ -28,7 +27,7 @@ const SettingsButton = ({
     <TouchableOpacity className="w-full" onPress={onPress}>
       <View className="flex-row items-center mx-2 gap-3 py-2">
         <FontAwesome name={icon} size={24} color="white" />
-        <Text className="text-3xl">{label}</Text>
+        <Text className="text-3xl text-white">{label}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -81,15 +80,3 @@ export default function ModalScreen() {
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});
