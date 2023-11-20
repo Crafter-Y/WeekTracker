@@ -1,8 +1,13 @@
-import { View, StyleProp, ViewStyle, TextStyle } from "react-native";
+import { View, StyleProp, ViewStyle, TextStyle, Pressable } from "react-native";
 import WeekView, { WeekViewEvent } from "react-native-week-view";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Store } from "../../helpers/store";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../../components/Header";
+import { Link } from "expo-router";
+import { FontAwesome } from "@expo/vector-icons";
+import HeaderButton from "../../components/HeaderButton";
 
 const createFixedWeekDate = (
   day: string | number,
@@ -98,7 +103,14 @@ export default function HomeScreen() {
   };
 
   return (
-    <View className="w-full h-full">
+    <SafeAreaView
+      className="w-full h-full"
+      style={{ height: "100%", width: "100%" }}
+    >
+      <Header
+        title="13.11.2023 - 19.11.2023"
+        headerRight={<HeaderButton icon="navicon" link="/modal" />}
+      />
       <WeekView
         events={events}
         fixedHorizontally={true}
@@ -144,6 +156,6 @@ export default function HomeScreen() {
           }
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 }
