@@ -5,6 +5,8 @@ import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import "../global.css";
 import { StatusBar } from "expo-status-bar";
+import { Store } from "../helpers/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -35,6 +37,20 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    let activities = await AsyncStorage.getItem("activities");
+
+    if (activities != null) {
+      Store.update((state) => {
+        state.kategories = JSON.parse(activities as string);
+      });
+    }
+  };
+
   if (!loaded) {
     return null;
   }
@@ -48,7 +64,11 @@ function RootLayoutNav() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
-          name="modal"
+          name="homeOptions"
+          options={{ presentation: "transparentModal", headerShown: false }}
+        />
+        <Stack.Screen
+          name="createCategory"
           options={{ presentation: "transparentModal", headerShown: false }}
         />
       </Stack>

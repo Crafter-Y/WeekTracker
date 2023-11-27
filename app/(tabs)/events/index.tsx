@@ -5,6 +5,7 @@ import { Text, View } from "react-native";
 import { DarkTheme } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Store } from "../../../helpers/store";
+import { useEffect } from "react";
 
 export type Kategory = {
   id: string;
@@ -20,9 +21,11 @@ export type Activity = {
 
 type EntryButonProps = {
   kategory?: string;
+  title: string;
+  color: string;
 };
 
-const EntryButton = ({ kategory }: EntryButonProps) => {
+const EntryButton = ({ kategory, title, color }: EntryButonProps) => {
   return (
     <TouchableOpacity>
       <View
@@ -36,8 +39,11 @@ const EntryButton = ({ kategory }: EntryButonProps) => {
           </View>
         ) : undefined}
         <View className="flex-row items-center gap-2">
-          <View className="h-4 w-4 rounded-full bg-green-400"></View>
-          <Text className="text-white text-xl font-semibold">Hello World</Text>
+          <View
+            className="h-4 w-4 rounded-full"
+            style={{ backgroundColor: color }}
+          />
+          <Text className="text-white text-xl font-semibold">{title}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -74,28 +80,35 @@ export default function EventsScreen() {
     <SafeAreaView>
       <Header
         title="Kategories"
-        headerRight={<HeaderButton icon="plus" link="/modal" />}
+        headerRight={<HeaderButton icon="plus" link="/createCategory" />}
       />
       <ExplanationBar text="The overall kategory of an activity. Used to group activities together. The kategory defines the color of an activity and is used to make analytics afterwards." />
 
       <View className="gap-3 my-2">
-        <EntryButton />
-        <EntryButton />
-        <EntryButton />
-        <EntryButton />
+        {kategories.map((kategory) => (
+          <EntryButton
+            title={kategory.title}
+            key={kategory.id}
+            color={kategory.color}
+          />
+        ))}
       </View>
 
       <Header
         title="Activities"
-        headerRight={<HeaderButton icon="plus" link="/modal" />}
+        headerRight={<HeaderButton icon="plus" link="/createCategory" />}
       />
       <ExplanationBar text="The activity itself. For example: 'Working at company xy', 'Gym' or 'Spanish lesson'." />
 
       <View className="gap-3 my-2">
-        <EntryButton kategory="Hello World" />
-        <EntryButton kategory="Kategory two" />
-        <EntryButton />
-        <EntryButton />
+        {activities.map((activity) => (
+          <EntryButton
+            title={activity.title}
+            kategory={activity.kategory.title}
+            key={activity.id}
+            color={activity.kategory.color}
+          />
+        ))}
       </View>
     </SafeAreaView>
   );
