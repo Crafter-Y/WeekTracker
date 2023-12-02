@@ -6,6 +6,7 @@ import { DarkTheme } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Store } from "../../../helpers/store";
 import { useEffect, useState } from "react";
+import { router } from "expo-router";
 
 export type Category = {
   id: string;
@@ -23,11 +24,17 @@ type EntryButonProps = {
   category?: string;
   title: string;
   color: string;
+  onPress?: () => void;
 };
 
-const EntryButton = ({ category, title, color }: EntryButonProps) => {
+const EntryButton = ({
+  category,
+  title,
+  color,
+  onPress = () => {},
+}: EntryButonProps) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View
         className="border rounded-lg mx-2 px-4 py-2"
         style={{ borderColor: DarkTheme.colors.border }}
@@ -114,6 +121,12 @@ export default function EventsScreen() {
               title={category.title}
               key={category.id}
               color={category.color}
+              onPress={() =>
+                router.push({
+                  pathname: "/categoryContextModal",
+                  params: { id: category.id },
+                })
+              }
             />
           ))}
         </View>
@@ -131,6 +144,12 @@ export default function EventsScreen() {
               category={activity.category?.title}
               key={activity.id}
               color={activity.category?.color}
+              onPress={() =>
+                router.push({
+                  pathname: "/activityContextModal",
+                  params: { id: activity.id },
+                })
+              }
             />
           ))}
         </View>

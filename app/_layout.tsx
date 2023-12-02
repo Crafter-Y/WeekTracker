@@ -77,6 +77,14 @@ function RootLayoutNav() {
           name="createActivity"
           options={{ presentation: "transparentModal", headerShown: false }}
         />
+        <Stack.Screen
+          name="activityContextModal"
+          options={{ presentation: "transparentModal", headerShown: false }}
+        />
+        <Stack.Screen
+          name="categoryContextModal"
+          options={{ presentation: "transparentModal", headerShown: false }}
+        />
       </Stack>
       <StatusBar backgroundColor={DarkTheme.colors.card} />
     </ThemeProvider>
