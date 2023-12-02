@@ -43,10 +43,12 @@ export default function RootLayout() {
 
   const loadData = async () => {
     let activities = await AsyncStorage.getItem("activities");
+    let categories = await AsyncStorage.getItem("categories");
 
     if (activities != null) {
       Store.update((state) => {
-        state.kategories = JSON.parse(activities as string);
+        state.activities = JSON.parse(activities as string);
+        state.categories = JSON.parse(categories as string);
       });
     }
   };
@@ -69,6 +71,10 @@ function RootLayoutNav() {
         />
         <Stack.Screen
           name="createCategory"
+          options={{ presentation: "transparentModal", headerShown: false }}
+        />
+        <Stack.Screen
+          name="createActivity"
           options={{ presentation: "transparentModal", headerShown: false }}
         />
       </Stack>

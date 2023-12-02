@@ -26,21 +26,21 @@ export default function CreateCategoryModal() {
 
   const [title, setTitle] = useState("");
 
-  const createKategory = async () => {
+  const createCategory = async () => {
     if (title.length) {
-      let newKategory = {
+      let newCategory = {
         id: uuidv4(),
         title: title,
         color: selectedColor,
       };
 
       Store.update((state) => {
-        state.kategories.push(newKategory);
+        state.categories.push(newCategory);
       });
 
       await AsyncStorage.setItem(
-        "activities",
-        JSON.stringify(Store.getRawState().kategories)
+        "categories",
+        JSON.stringify(Store.getRawState().categories)
       );
       router.back();
     }
@@ -83,7 +83,7 @@ export default function CreateCategoryModal() {
       </View>
 
       <View className="border border-white rounded-lg m-2">
-        <TouchableOpacity className="w-full" onPress={createKategory}>
+        <TouchableOpacity className="w-full" onPress={createCategory}>
           <View className="flex-row items-center mx-2 gap-3 py-2">
             <FontAwesome name="plus" size={24} color={selectedColor} />
             <Text className="text-3xl text-white">Create</Text>
