@@ -6,6 +6,7 @@ import { Store } from "../../helpers/store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Header";
 import HeaderButton from "../../components/HeaderButton";
+import { v4 as uuidv4 } from "uuid";
 
 const createFixedWeekDate = (
   day: string | number,
@@ -37,19 +38,23 @@ interface UntypedWeekViewEvent {
   disableLongPress?: boolean;
 }
 
-const createTypedEvent = (arr: UntypedWeekViewEvent[]): WeekViewEvent[] => {
+const createTypedEvents = (arr: UntypedWeekViewEvent[]): WeekViewEvent[] => {
   return arr.map((entry) => {
-    return {
-      id: entry.id,
-      description: entry.description,
-      startDate: entry.startDate,
-      endDate: entry.endDate,
-      eventKind: entry.eventKind ?? "standard",
-      resolveOverlap: entry.resolveOverlap ?? "lane",
-      stackKey: entry.stackKey ?? entry.id + "",
-      color: entry.color,
-    };
+    return createTypedEvent(entry);
   });
+};
+
+const createTypedEvent = (entry: UntypedWeekViewEvent): WeekViewEvent => {
+  return {
+    id: entry.id,
+    description: entry.description,
+    startDate: entry.startDate,
+    endDate: entry.endDate,
+    eventKind: entry.eventKind ?? "standard",
+    resolveOverlap: entry.resolveOverlap ?? "lane",
+    stackKey: entry.stackKey ?? entry.id + "",
+    color: entry.color,
+  };
 };
 
 const testEvents: UntypedWeekViewEvent[] = [
@@ -74,6 +79,41 @@ const testEvents: UntypedWeekViewEvent[] = [
     endDate: createFixedWeekDate(3, 17, 30),
     color: "green",
   },
+  {
+    id: 4,
+    description: "Event 2",
+    startDate: createFixedWeekDate("tue", 17),
+    endDate: createFixedWeekDate(2, 17, 30),
+    color: "green",
+  },
+  {
+    id: 5,
+    description: "Event 2",
+    startDate: createFixedWeekDate("thu", 17),
+    endDate: createFixedWeekDate(4, 17, 30),
+    color: "green",
+  },
+  {
+    id: 6,
+    description: "Event 2",
+    startDate: createFixedWeekDate("fri", 17),
+    endDate: createFixedWeekDate(5, 17, 30),
+    color: "green",
+  },
+  {
+    id: 7,
+    description: "Event 2",
+    startDate: createFixedWeekDate("sat", 17),
+    endDate: createFixedWeekDate(6, 17, 30),
+    color: "green",
+  },
+  {
+    id: 8,
+    description: "Event 2",
+    startDate: createFixedWeekDate("sun", 17),
+    endDate: createFixedWeekDate(7, 17, 30),
+    color: "green",
+  },
 ];
 
 export default function HomeScreen() {
@@ -82,7 +122,7 @@ export default function HomeScreen() {
   const draggingEnabled = Store.useState((state) => state.draggingEnabled);
 
   useEffect(() => {
-    setEvents(createTypedEvent(testEvents));
+    setEvents(createTypedEvents(testEvents));
   }, []);
 
   const editEvent = (
@@ -152,6 +192,45 @@ export default function HomeScreen() {
           if (editingEventId != undefined) {
             setEditEventId(undefined);
           }
+        }}
+        onGridLongPress={(pressEvent, startHour, date) => {
+          let mDate = moment(date).startOf("minute");
+          if (mDate.get("minutes") < 15) {
+            mDate = mDate.subtract(mDate.get("minutes"), "minutes");
+          } else if (mDate.get("minutes") < 30) {
+            mDate = mDate.add(30 - mDate.get("minutes"), "minutes");
+          } else if (mDate.get("minutes") < 45) {
+            mDate = mDate.subtract(mDate.get("minutes") - 30, "minutes");
+          } else {
+            mDate = mDate.add(60 - mDate.get("minutes"), "minutes");
+          }
+
+          let fromHour = mDate.get("hour");
+
+          let toHour;
+          if (fromHour > 22) {
+            toHour = 23;
+          } else {
+            toHour = fromHour + 1;
+          }
+
+          let weekday = mDate.get("weekday") == 0 ? 7 : mDate.get("weekday");
+
+        
+          setEvents([
+            ...events,
+            createTypedEvent({
+              id: Math.random(),
+              description: "New Event",
+              startDate: createFixedWeekDate(
+                weekday,
+                fromHour,
+                mDate.get("minutes")
+              ),
+              endDate: createFixedWeekDate(weekday, toHour, 59),
+              color: "green",
+            }),
+          ]);
         }}
       />
     </SafeAreaView>
